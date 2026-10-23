@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>People Calculator</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --text: #1a1d21;
+    --muted: #9aa2ad;
+    --border: #d0d4da;
+    --resultbg: #f0f4ff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #111418;
+      --text: #e8eaed;
+      --muted: #6b7280;
+      --border: #2a2f38;
+      --resultbg: #1b2333;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+    padding: 16px;
+  }
+  .field { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  label {
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--muted);
+  }
+  input {
+    font-size: 2rem;
+    width: 220px;
+    padding: 8px 14px;
+    text-align: center;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg);
+    color: var(--text);
+  }
+  input:focus { outline: none; border-color: var(--text); }
+  #result {
+    font-size: 2.4rem;
+    font-weight: 700;
+    width: 220px;
+    padding: 10px 14px;
+    text-align: center;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    background: var(--resultbg);
+    min-height: 1.5em;
+  }
+  .hint {
+    color: var(--muted);
+    font-size: .85rem;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+  <div class="field">
+    <label for="full">Full</label>
+    <input id="full" type="number" min="0" inputmode="numeric" autofocus>
+  </div>
+
+  <div class="field">
+    <label for="tidies">Tidies</label>
+    <input id="tidies" type="number" min="0" inputmode="numeric">
+  </div>
+
+  <div class="field">
+    <label>People</label>
+    <div id="result">0</div>
+  </div>
+
+  <div class="hint">updates as you type &nbsp;|&nbsp; space = reset</div>
+
+<script>
+  const fullEl = document.getElementById("full");
+  const tidiesEl = document.getElementById("tidies");
+  const resultEl = document.getElementById("result");
+
+  function update() {
+    const full = Number(fullEl.value) || 0;
+    const tidies = Number(tidiesEl.value) || 0;
+    const people = (full * 45 + tidies * 25) / 480;
+    resultEl.textContent = Math.round(people * 1000) / 1000;
+  }
+
+  function reset() {
+    fullEl.value = "";
+    tidiesEl.value = "";
+    resultEl.textContent = "0";
+    fullEl.focus();
+  }
+
+  fullEl.addEventListener("input", update);
+  tidiesEl.addEventListener("input", update);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === " ") {
+      e.preventDefault();
+      reset();
+    }
+  });
+</script>
+</body>
+</html>
